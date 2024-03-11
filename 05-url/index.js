@@ -23,7 +23,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const http = __importStar(require("http")); // const http = require("http");
+const http = __importStar(require("http"));
 const fs = require("fs");
 const url = require("url");
 const server = http.createServer((req, res) => {
@@ -35,7 +35,7 @@ const server = http.createServer((req, res) => {
             return;
         }
     });
-    console.log(myUrl.query.a);
-    res.end();
+    console.log(myUrl.query);
+    res.end("home page");
 });
 server.listen(8000, () => console.log("server listening on port 8000"));

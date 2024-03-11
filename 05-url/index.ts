@@ -12,7 +12,7 @@ const server = http.createServer(
       }
     });
     console.log(myUrl.query);
-    res.end();
+    res.end("home page");
   }
 );
 
