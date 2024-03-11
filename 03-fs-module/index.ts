@@ -6,15 +6,15 @@ const fs = require("fs");
 //   "hello world!!!!!!!!!!!!!!!!!!!",
 //   (err: NodeJS.ErrnoException | null, data: Buffer) => {}
 // );
-// const result = fs.readFileSync("./test.txt");
+// const result = fs.readFileSync("./test.txt","utf-8");
 
-// console.log(result.toString());
+// console.log(result);
 
-// fs.readFile("./test.txt",(err:NodeJS.ErrnoException|null,result:Buffer)=>{
+// fs.readFile("./test.txt","utf-8",(err:NodeJS.ErrnoException|null,result:Buffer)=>{
 //     if(err){
 //         console.log(err);
 //     }
 //     else{
-//         console.log(result.toString());
+//         console.log(result);
 //     }
 // })
