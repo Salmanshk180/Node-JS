@@ -1,8 +1,8 @@
-const http = require("http");
+import * as http from "http";// const http = require("http");
 const fs = require("fs");
 
 const server = http.createServer(
-  (req:Request, res:Response) => {
+  (req:http.IncomingMessage, res:http.ServerResponse) => {
     const log = `${Date.now()} new request\n`;
     fs.appendFile(
       "log.txt",
@@ -14,8 +14,7 @@ const server = http.createServer(
         }
       }
     );
-    console.log(req);
-    console.log(res);
+    res.end();
   }
 );
 
