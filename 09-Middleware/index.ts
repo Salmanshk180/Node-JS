@@ -8,6 +8,12 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use((req, res, next) => {
+  console.log(req.body);
+  console.log("Middleware 2");
+  next();
+});
+
 app.get("/api/users", (req, res) => {
   return res.json(users);
 });
