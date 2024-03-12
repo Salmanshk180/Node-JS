@@ -41,7 +41,7 @@ app.patch("/api/users/:id", (req, res) => {
   const id = Number(req.params.id);
   const body = req.body;
   let userIndex = users.findIndex((u: User) => u.id === id);
-  users[userIndex] = { ...body, id: userIndex + 1 };
+  users[userIndex] = {...users[userIndex], ...body, id: userIndex + 1 };
   fs.writeFile(
     "./MOCK_DATA.json",
     JSON.stringify(users),
