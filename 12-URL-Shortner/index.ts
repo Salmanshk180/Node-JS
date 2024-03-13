@@ -9,8 +9,10 @@ interface urlType {
   originalURL: string;
   shortURL: string;
 }
+
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
+
 app.post("/api/url", (req, res) => {
   const { url } = req.body;
   const shortURL = generateUniqueId({ length: 4 });
@@ -30,4 +32,5 @@ app.get("/api/:url", (req, res) => {
   const data: urlType = urlData.find((u: urlType) => u["shortURL"] == url);
   return res.redirect(data.originalURL);
 });
+
 app.listen(8000, () => console.log("Server listening on port:8000"));
