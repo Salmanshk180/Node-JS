@@ -1,13 +1,23 @@
+// app.ts
+
 import express from "express";
-import { auth } from "./routes/auth";
-import { users } from "./routes/users";
-import { login } from "./routes/login";
-
+import { redirectToLogin } from "./service/redirectToLogin";
+import { router } from "./routes/routes";
+import { staticroute } from "./routes/staticRoute";
+import { urlRouter } from "./routes/urlRoute";
+const cookieParser = require("cookie-parser");
+const path = require("path");
 const app = express();
+
+app.set("view engine", "ejs");
+app.set("views", path.resolve("./views"));
+
 app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
 
-app.use("/api", users);
-app.use("/api", auth);
-app.use("/api", login);
-
+app.use("/api/url", redirectToLogin, urlRouter);
+app.use("/api", router);
+app.use("/api",staticroute)
+// Routes that require authentication
 app.listen(8000, () => console.log("Server is listening on port 8000"));

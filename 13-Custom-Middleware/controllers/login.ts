@@ -1,14 +1,16 @@
 import express from "express";
 import { v4 as uuidv4 } from "uuid";
-const fs = require("fs");
+import { setUser } from "../service/auth";
 const data = require("../users.json");
-export const auth = express.Router();
+var jwt = require("jsonwebtoken");
+const key = require("./key");
 interface User {
   id: string;
   email: string;
   password: string;
 }
-auth.post("/users", (req, res) => {
+
+export async function handleLogin(req: express.Request, res: express.Response) {
   const { email, password } = req.body;
   const emailRegex = /^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/;
   const passwordRegex =
@@ -28,21 +30,15 @@ auth.post("/users", (req, res) => {
         "Password should contain at least one lowercase alphabet,one uppercase alphabet,one numeric value,and total length must be in the range [8-15]",
     });
   }
-  const id = uuidv4();
-  const userExist = data.find((user: User) => user.email === email);
-  if (userExist) {
-    return res.status(401).json({ error: "User Already Exist" });
+  const user: User = await data.find((user: User) => user.email === email);
+  if (!user) {
+    return res.status(404).json({ error: "User Not Found" });
   }
-  data.push({ id: id, email, password });
-  fs.writeFile(
-    "./users.json",
-    JSON.stringify(data),
-    (error: NodeJS.ErrnoException, data: Buffer) => {
-      if (error) {
-        return res.status(500).json({ error: error });
-      } else {
-        return res.status(201).json({ Status: "User Created" });
-      }
-    }
-  );
-});
+  const passwordValidate = user.password === password;
+  if (!passwordValidate) {
+    return res.status(401).json({ error: "Please check your password" });
+  }
+  const token = setUser(user);
+  res.cookie("token", token);
+ return res.redirect("/api/url");
+}
