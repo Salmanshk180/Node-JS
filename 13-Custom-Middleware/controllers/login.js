@@ -13,7 +13,6 @@ exports.handleLogin = void 0;
 const auth_1 = require("../service/auth");
 const data = require("../users.json");
 var jwt = require("jsonwebtoken");
-const key = require("./key");
 function handleLogin(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         const { email, password } = req.body;

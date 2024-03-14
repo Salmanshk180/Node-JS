@@ -3,7 +3,6 @@ import { v4 as uuidv4 } from "uuid";
 import { setUser } from "../service/auth";
 const data = require("../users.json");
 var jwt = require("jsonwebtoken");
-const key = require("./key");
 interface User {
   id: string;
   email: string;

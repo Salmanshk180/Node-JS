@@ -11,6 +11,7 @@ const staticRoute_1 = require("./routes/staticRoute");
 const urlRoute_1 = require("./routes/urlRoute");
 const cookieParser = require("cookie-parser");
 const path = require("path");
+require("dotenv").config();
 const app = (0, express_1.default)();
 app.set("view engine", "ejs");
 app.set("views", path.resolve("./views"));
