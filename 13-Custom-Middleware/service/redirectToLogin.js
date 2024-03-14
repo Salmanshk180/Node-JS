@@ -20,11 +20,13 @@ function redirectToLogin(req, res, next) {
             return res.redirect("/api/login");
         }
         const user = (0, auth_1.getUser)(userToken);
-        console.log(user);
         if (!user) {
             return res.redirect("/api/login");
         }
         req.user = user;
+        if (req.originalUrl.startsWith("/api/admin") && user.role !== "Admin") {
+            return res.status(403).send("Unauthorized");
+        }
         next();
     });
 }

@@ -10,23 +10,36 @@
     <form action="/api/url" method="post" style="margin-block: 20px">
       <input type="text" name="url" placeholder="Enter URL" />
       <button type="submit">Generate</button>
-      <% if (locals.newURL){%>
-      <p>generatedID:<a href=<%= locals.originalURL  %>>http://localhost:8000/<%=locals.newURL%></a></p>
-      <%} %>
     </form>
-    <% if (locals.urls) { %>
+    <% if (urls && urls.length === 0 ) { %>
+      <p>No Data</p>
+    <%}
+    else{
+      %>
+      generated URL: http://localhost:8000/api/<%= newURL %>
+      <%
+    }
+    %>
+    <p></p>
+    <% if (urls && urls.length > 0 ) { %>
     <table>
       <thead>
-        <th>S. No</th>
-        <th>Redirect</th>
-        <th>ShortID</th>
+        <tr>
+          <th>S. No</th>
+          <th>Original URL</th>
+          <th>Short URL</th>
+        </tr>
       </thead>
       <tbody>
         <% urls.forEach((url, index) => { %>
         <tr>
           <td><%= index + 1 %></td>
-          <td><a href=<%= locals.originalURL%>><%= url.originalURL %></a></td>
-          <td><a href=<%= locals.originalURL%>> http://localhost:8000/<%= url.shortURL %></a></td>
+          <td><a href="<%= url.originalURL %>"><%= url.originalURL %></a></td>
+          <td>
+            <a href="<%= url.originalURL %>"
+              >http://localhost:8000/<%= url.shortURL %></a
+            >
+          </td>
         </tr>
         <% }) %>
       </tbody>
@@ -34,3 +47,22 @@
     <% } %>
   </body>
 </html>
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <h1>Home Page</h1>
+  <form action="/api/url" method="post" style="margin-block: 20px">
+    <input type="text" name="url" placeholder="Enter URL" />
+    <button type="submit">Generate</button>
+    <% if (locals.urls.length===0) { %>
+      <p>No Data</p>
+      <% } %>
+  </form>
+</body>
+</html> -->

@@ -8,6 +8,7 @@ interface User {
   id: string;
   email: string;
   password: string;
+  role: string;
 }
 
 export async function handleLogin(req: express.Request, res: express.Response) {

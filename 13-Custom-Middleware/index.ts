@@ -17,7 +17,8 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 app.use("/api/url", redirectToLogin, urlRouter);
+app.use("/api/admin/users",redirectToLogin, staticroute);
 app.use("/api", router);
-app.use("/api",staticroute)
-// Routes that require authentication
+app.use("/api", staticroute);
+
 app.listen(8000, () => console.log("Server is listening on port 8000"));
