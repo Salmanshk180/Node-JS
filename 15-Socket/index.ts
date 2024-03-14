@@ -13,7 +13,7 @@ app.get("/", (req, res) => {
 
 io.on("connection", (socket: Socket) => {
   socket.on("message", (message: string) => {
-    io.emit("reply message", message);  
+    io.emit("reply message", message);
   });
 });
 server.listen(9000, () => console.log("Server is listening on port 9000"));
