@@ -2,7 +2,7 @@
 
 import express from "express";
 import { getUser } from "../service/auth";
-import { Roles } from "../utils/Roles";
+import { Roles, ERROR_MESSAGE, HTTP_STATUS_CODES } from "../constants/constant";
 interface User {
   id: string;
   email: string;
@@ -30,7 +30,9 @@ export async function redirectToLogin(
   }
   req.user = user;
   if (req.originalUrl.startsWith("/api/admin") && user.role !== Roles.Admin) {
-    return res.status(Number(process.env.UNAUTHORIZED_ACCESS)).send("Unauthorized");
+    return res
+      .status(HTTP_STATUS_CODES.UNAUTHORIZED)
+      .json(ERROR_MESSAGE._Unauthorized);
   }
   next();
 }

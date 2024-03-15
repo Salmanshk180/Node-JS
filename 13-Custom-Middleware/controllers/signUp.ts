@@ -1,5 +1,10 @@
 import express from "express";
 import { v4 as uuidv4 } from "uuid";
+import {
+  ERROR_MESSAGE,
+  HTTP_STATUS_CODES,
+  SUCCESS_MESSAGES,
+} from "../constants/constant";
 const fs = require("fs");
 const data = require("../users.json");
 interface User {
@@ -18,29 +23,33 @@ export async function handleAuthentication(
   const passwordRegex =
     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@.#$!%*?&^])[A-Za-z\d@.#$!%*?&]{8,15}$/;
   if (!email) {
-    console.log("No email provided"); // Debugging statement
-    return res.status(Number(process.env.NO_DATA_FOUND)).json({ error: "Please enter an email" });
+    return res
+      .status(HTTP_STATUS_CODES.NOT_FOUND)
+      .json(ERROR_MESSAGE._NotFound("Email"));
   }
   if (!password) {
-    console.log("No password provided"); // Debugging statement
-    return res.status(Number(process.env.NO_DATA_FOUND)).json({ error: "Please enter a password" });
+    return res
+      .status(HTTP_STATUS_CODES.NOT_FOUND)
+      .json(ERROR_MESSAGE._NotFound("Password"));
   }
   if (!emailRegex.test(email)) {
     console.log("Invalid email format"); // Debugging statement
-    return res.status(Number(process.env.INVALID_INPUT)).json({ error: "Please enter a valid email" });
+    return res
+      .status(HTTP_STATUS_CODES.BAD_REQUEST)
+      .json(ERROR_MESSAGE._Bad_Request);
   }
   if (!passwordRegex.test(password)) {
     console.log("Invalid password format"); // Debugging statement
-    return res.status(Number(process.env.INVALID_INPUT)).json({
-      error:
-        "Password should contain at least one lowercase alphabet, one uppercase alphabet, one numeric value, and one special character, and total length must be in the range [8-15]",
-    });
+    return res
+      .status(HTTP_STATUS_CODES.BAD_REQUEST)
+      .json(ERROR_MESSAGE._Bad_Request);
   }
   const id = uuidv4();
   const userExist = await data.find((user: User) => user.email === email);
   if (userExist) {
-    console.log("User already exists"); // Debugging statement
-    return res.status(Number(process.env.USER_EXISTS)).json({ error: "User Already Exist" });
+    return res
+      .status(HTTP_STATUS_CODES.CONFLICT)
+      .json(ERROR_MESSAGE._Conflict("User"));
   }
   data.push({ id: id, email, password, role: "Normal" });
   fs.writeFile(
@@ -49,10 +58,12 @@ export async function handleAuthentication(
     (error: NodeJS.ErrnoException, data: Buffer) => {
       if (error) {
         console.error("Error writing to file:", error); // Debugging statement
-        return res.status(Number(process.env.SERVER_ERROR)).json({ error: "Internal Server Error" });
+        return res
+          .status(HTTP_STATUS_CODES.OK)
+          .json(ERROR_MESSAGE._Internal_Server_Error);
       } else {
         console.log("User created successfully"); // Debugging statement
-        return res.status(Number(process.env.USER_CREATED)).json({ Status: "User Created" });
+        return res.status(HTTP_STATUS_CODES.OK).json(SUCCESS_MESSAGES._Ok);
       }
     }
   );

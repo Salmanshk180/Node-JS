@@ -1,8 +1,8 @@
 import express from "express";
 import { v4 as uuidv4 } from "uuid";
 import { setUser } from "../service/auth";
+import { ERROR_MESSAGE, HTTP_STATUS_CODES } from "../constants/constant";
 const data = require("../users.json");
-var jwt = require("jsonwebtoken");
 interface User {
   id: string;
   email: string;
@@ -16,29 +16,38 @@ export async function handleLogin(req: express.Request, res: express.Response) {
   const passwordRegex =
     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@.#$!%*?&^])[A-Za-z\d@.#$!%*?&]{8,15}$/;
   if (!email) {
-    return res.status(Number(process.env.NO_DATA_FOUND)).json({ error: "Please enter a email" });
+    return res
+      .status(HTTP_STATUS_CODES.NOT_FOUND)
+      .json(ERROR_MESSAGE._NotFound("Email"));
   }
   if (!password) {
-    return res.status(Number(process.env.NO_DATA_FOUND)).json({ error: "Please enter a password" });
+    return res
+      .status(HTTP_STATUS_CODES.NOT_FOUND)
+      .json(ERROR_MESSAGE._NotFound("Passowrd"));
   }
   if (!emailRegex.test(email)) {
-    return res.status(Number(process.env.INVALID_INPUT)).json({ error: "Please enter a valid email" });
+    return res
+      .status(HTTP_STATUS_CODES.BAD_REQUEST)
+      .json(ERROR_MESSAGE._Bad_Request);
   }
   if (!passwordRegex.test(password)) {
-    return res.status(Number(process.env.INVALID_INPUT)).json({
-      error:
-        "Password should contain at least one lowercase alphabet,one uppercase alphabet,one numeric value,and total length must be in the range [8-15]",
-    });
+    return res
+      .status(HTTP_STATUS_CODES.BAD_REQUEST)
+      .json(ERROR_MESSAGE._Bad_Request);
   }
   const user: User = await data.find((user: User) => user.email === email);
   if (!user) {
-    return res.status(Number(process.env.NO_DATA_FOUND)).json({ error: "User Not Found" });
+    return res
+      .status(HTTP_STATUS_CODES.NOT_FOUND)
+      .json(ERROR_MESSAGE._NotFound("User"));
   }
   const passwordValidate = user.password === password;
   if (!passwordValidate) {
-    return res.status(Number(process.env.INVALID_INPUT)).json({ error: "Please check your password" });
+    return res
+      .status(HTTP_STATUS_CODES.BAD_REQUEST)
+      .json(ERROR_MESSAGE._NotMatch("Password"));
   }
   const token = setUser(user);
   res.cookie("token", token);
- return res.redirect("/api/url");
+  return res.redirect("/api/url");
 }
