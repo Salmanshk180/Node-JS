@@ -12,7 +12,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.redirectToLogin = void 0;
 const auth_1 = require("../service/auth");
-const Roles_1 = require("../constants/Roles");
+const Roles_1 = require("../utils/Roles");
 function redirectToLogin(req, res, next) {
     return __awaiter(this, void 0, void 0, function* () {
         var _a;

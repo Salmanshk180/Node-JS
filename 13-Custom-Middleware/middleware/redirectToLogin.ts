@@ -2,7 +2,7 @@
 
 import express from "express";
 import { getUser } from "../service/auth";
-import { Roles } from "../constants/Roles";
+import { Roles } from "../utils/Roles";
 interface User {
   id: string;
   email: string;
