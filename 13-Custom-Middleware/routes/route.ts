@@ -1,8 +1,7 @@
 // routes/auth.ts
 import express from 'express';
-import { handleAuthentication } from '../controllers/auth';
+import { handleAuthentication } from '../controllers/signUp';
 import { handleLogin } from '../controllers/login';
-import { handleGetUsers } from '../controllers/users';
 
 const data  = require("../urls.json");
 export const router = express.Router();

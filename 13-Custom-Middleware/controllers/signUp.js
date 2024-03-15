@@ -21,19 +21,19 @@ function handleAuthentication(req, res) {
         const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@.#$!%*?&^])[A-Za-z\d@.#$!%*?&]{8,15}$/;
         if (!email) {
             console.log("No email provided"); // Debugging statement
-            return res.status(404).json({ error: "Please enter an email" });
+            return res.status(Number(process.env.NO_DATA_FOUND)).json({ error: "Please enter an email" });
         }
         if (!password) {
             console.log("No password provided"); // Debugging statement
-            return res.status(404).json({ error: "Please enter a password" });
+            return res.status(Number(process.env.NO_DATA_FOUND)).json({ error: "Please enter a password" });
         }
         if (!emailRegex.test(email)) {
             console.log("Invalid email format"); // Debugging statement
-            return res.status(401).json({ error: "Please enter a valid email" });
+            return res.status(Number(process.env.INVALID_INPUT)).json({ error: "Please enter a valid email" });
         }
         if (!passwordRegex.test(password)) {
             console.log("Invalid password format"); // Debugging statement
-            return res.status(401).json({
+            return res.status(Number(process.env.INVALID_INPUT)).json({
                 error: "Password should contain at least one lowercase alphabet, one uppercase alphabet, one numeric value, and one special character, and total length must be in the range [8-15]",
             });
         }
@@ -41,17 +41,17 @@ function handleAuthentication(req, res) {
         const userExist = yield data.find((user) => user.email === email);
         if (userExist) {
             console.log("User already exists"); // Debugging statement
-            return res.status(401).json({ error: "User Already Exist" });
+            return res.status(Number(process.env.USER_EXISTS)).json({ error: "User Already Exist" });
         }
-        data.push({ id: id, email, password });
+        data.push({ id: id, email, password, role: "Normal" });
         fs.writeFile("./users.json", JSON.stringify(data), (error, data) => {
             if (error) {
                 console.error("Error writing to file:", error); // Debugging statement
-                return res.status(500).json({ error: "Internal Server Error" });
+                return res.status(Number(process.env.SERVER_ERROR)).json({ error: "Internal Server Error" });
             }
             else {
                 console.log("User created successfully"); // Debugging statement
-                return res.status(201).json({ Status: "User Created" });
+                return res.status(Number(process.env.USER_CREATED)).json({ Status: "User Created" });
             }
         });
         console.log("Redirecting to login page"); // Debugging statement

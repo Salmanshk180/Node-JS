@@ -18,17 +18,9 @@ exports.staticroute = (0, express_1.default)();
 const urls = require("../urls.json");
 const users = require("../users.json");
 exports.staticroute.get("/url", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    //   const token = req.cookies.token;
     if (!req.user)
         return res.redirect("/login");
     const filterData = urls.filter((url) => { var _a; return url.createdBy === ((_a = req.user) === null || _a === void 0 ? void 0 : _a.id); });
-    // if(filterData.length === 0){
-    //   return res.render("home", {
-    //     urls: [],
-    //     newUrl: "No Data",
-    //     originalURL: "No Data",
-    //   });
-    // }
     return res.render("home", {
         urls: filterData,
         newUrl: filterData[filterData.length - 1].shortURL,

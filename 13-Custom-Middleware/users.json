@@ -3,6 +3,12 @@
     "id": "91298d54-57e4-495c-86e4-439873cd73bd",
     "email": "Salman@gmail.com",
     "password": "Salman@123",
+    "role": "Admin"
+  },
+  {
+    "id": "6652f3e5-bde7-470b-968d-f9b6777cf2c8",
+    "email": "Salman123@gmail.com",
+    "password": "Salman@123",
     "role": "Normal"
   }
 ]

@@ -11,7 +11,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.redirectToLogin = void 0;
-const auth_1 = require("./auth");
+const auth_1 = require("../service/auth");
+const Roles_1 = require("../constants/Roles");
 function redirectToLogin(req, res, next) {
     return __awaiter(this, void 0, void 0, function* () {
         var _a;
@@ -24,8 +25,8 @@ function redirectToLogin(req, res, next) {
             return res.redirect("/api/login");
         }
         req.user = user;
-        if (req.originalUrl.startsWith("/api/admin") && user.role !== "Admin") {
-            return res.status(403).send("Unauthorized");
+        if (req.originalUrl.startsWith("/api/admin") && user.role !== Roles_1.Roles.Admin) {
+            return res.status(Number(process.env.UNAUTHORIZED_ACCESS)).send("Unauthorized");
         }
         next();
     });

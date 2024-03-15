@@ -1,7 +1,8 @@
 // service/redirectToLogin.ts
 
 import express from "express";
-import { getUser } from "./auth";
+import { getUser } from "../service/auth";
+import { Roles } from "../constants/Roles";
 interface User {
   id: string;
   email: string;
@@ -28,8 +29,8 @@ export async function redirectToLogin(
     return res.redirect("/api/login");
   }
   req.user = user;
-  if (req.originalUrl.startsWith("/api/admin") && user.role !== "Admin") {
-    return res.status(403).send("Unauthorized");
+  if (req.originalUrl.startsWith("/api/admin") && user.role !== Roles.Admin) {
+    return res.status(Number(process.env.UNAUTHORIZED_ACCESS)).send("Unauthorized");
   }
   next();
 }

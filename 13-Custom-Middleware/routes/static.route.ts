@@ -1,5 +1,5 @@
 import express from "express";
-import { redirectToLogin } from "../service/redirectToLogin";
+import { redirectToLogin } from "../middleware/redirectToLogin";
 
 export const staticroute = express();
 const urls = require("../urls.json");
@@ -21,18 +21,10 @@ interface AuthenticatedRequest extends express.Request {
 staticroute.get(
   "/url",
   async (req: AuthenticatedRequest, res: express.Response) => {
-    //   const token = req.cookies.token;
     if (!req.user) return res.redirect("/login");
     const filterData = urls.filter(
       (url: URL) => url.createdBy === req.user?.id
     );
-    // if(filterData.length === 0){
-    //   return res.render("home", {
-    //     urls: [],
-    //     newUrl: "No Data",
-    //     originalURL: "No Data",
-    //   });
-    // }
     return res.render("home", {
       urls: filterData,
       newUrl: filterData[filterData.length - 1].shortURL,

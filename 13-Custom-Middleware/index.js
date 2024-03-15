@@ -1,14 +1,13 @@
 "use strict";
-// app.ts
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
-const redirectToLogin_1 = require("./service/redirectToLogin");
-const routes_1 = require("./routes/routes");
-const staticRoute_1 = require("./routes/staticRoute");
-const urlRoute_1 = require("./routes/urlRoute");
+const redirectToLogin_1 = require("./middleware/redirectToLogin");
+const route_1 = require("./routes/route");
+const static_route_1 = require("./routes/static.route");
+const url_route_1 = require("./routes/url.route");
 const cookieParser = require("cookie-parser");
 const path = require("path");
 require("dotenv").config();
@@ -18,8 +17,8 @@ app.set("views", path.resolve("./views"));
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use("/api/url", redirectToLogin_1.redirectToLogin, urlRoute_1.urlRouter);
-app.use("/api/admin/users", redirectToLogin_1.redirectToLogin, staticRoute_1.staticroute);
-app.use("/api", routes_1.router);
-app.use("/api", staticRoute_1.staticroute);
+app.use("/api/url", url_route_1.urlRouter);
+app.use("/api/admin/users", redirectToLogin_1.redirectToLogin, static_route_1.staticroute);
+app.use("/api", route_1.router);
+app.use("/api", static_route_1.staticroute);
 app.listen(8000, () => console.log("Server is listening on port 8000"));

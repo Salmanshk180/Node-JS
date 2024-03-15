@@ -13,7 +13,7 @@ exports.handleGetUsers = void 0;
 const users = require("../users.json");
 function handleGetUsers(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
-        return res.status(200).json(users);
+        return res.status(Number(process.env.STATUS_OK)).json(users);
     });
 }
 exports.handleGetUsers = handleGetUsers;
